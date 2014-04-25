@@ -3,7 +3,7 @@ big red button
 
 An arduino powered, wifi-enabled Big Red Button. You press the button, it sends a payload to a user-defined webservice. From there, the possibilities are endless!
 
-![Button](https://github.com/snrub/big-red-button/raw/master/button.jpg) 
+![Button](https://github.com/snrub/big-red-button/raw/master/button.jpg)&nbsp;
 ![Schematics - small](https://github.com/snrub/big-red-button/raw/master/schematics/BigRedButton_sml.png)
 
 # Hardware
@@ -46,5 +46,5 @@ Install these into the `<sketchbook-root>/libraries/` directory
 # License
 
 The MIT License (MIT)   
-Copyright (c) 2014 Julian Lloyd-Phillips
+Copyright (c) 2014 Julian Lloyd-Phillips   
 Full license: https://github.com/snrub/big-red-button/blob/master/LICENSE
