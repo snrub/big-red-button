@@ -38,3 +38,6 @@ Install these into the `<sketchbook-root>/libraries/` directory
     * http://arduiniana.org/libraries/PString/
   * Streaming
     * http://arduiniana.org/libraries/streaming/
+
+![Button](https://github.com/snrub/big-red-button/raw/master/button.png)
+![Schematics - small](https://github.com/snrub/big-red-button/raw/master/schematics/BigRedButton_sml.png)
