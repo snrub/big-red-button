@@ -1,9 +1,9 @@
-big-red-button
+big red button
 ==============
 
 An arduino powered, wifi-enabled Big Red Button. You press the button, it sends a payload to a user-defined webservice. From there, the possibilities are endless!
 
-![Button](https://github.com/snrub/big-red-button/raw/master/button.jpg)
+![Button](https://github.com/snrub/big-red-button/raw/master/button.jpg) 
 ![Schematics - small](https://github.com/snrub/big-red-button/raw/master/schematics/BigRedButton_sml.png)
 
 # Hardware
@@ -35,8 +35,9 @@ Install these into the `<sketchbook-root>/hardware/` directory
 Installation Instructions: http://arduino.cc/en/Guide/Libraries   
 Install these into the `<sketchbook-root>/libraries/` directory
 
-  * WiFlySerial. This is the original, but i used a modified version to enable me to use an external antenna:
-    * http://arduinowifly.sourceforge.net
+  * WiFlySerial
+    * Original: http://arduinowifly.sourceforge.net
+    * [I've modified it to enable me to use an external antenna](https://github.com/snrub/big-red-button/tree/master/src/libraries/WiFlySerial)
   * PString
     * http://arduiniana.org/libraries/PString
   * Streaming
