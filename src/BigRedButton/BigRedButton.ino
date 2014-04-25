@@ -1,6 +1,10 @@
 /**
  * BigRedButton
- * Quick and dirty sketch to hit a URL when a button is pressed.
+ * Quick and dirty sketch to connect to a wifi network, and request a URL when a button is pressed.
+ * The LED is used to indicate status - if the light is lit, then the button is ready to be pressed.
+ *
+ * Wifi credentials and the URL that should be requested should be defined in
+ * Configuration.h
  *
  * @author: Julian Lloyd-Phillips <jules@tasticl.es>
  * @date: 2012-08-12
