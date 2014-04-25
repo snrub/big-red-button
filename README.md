@@ -36,8 +36,8 @@ Installation Instructions: http://arduino.cc/en/Guide/Libraries
 Install these into the `<sketchbook-root>/libraries/` directory
 
   * WiFlySerial
+    * Modified: [I've modified it to enable me to use an external antenna](https://github.com/snrub/big-red-button/tree/master/src/libraries/WiFlySerial)
     * Original: http://arduinowifly.sourceforge.net
-    * [I've modified it to enable me to use an external antenna](https://github.com/snrub/big-red-button/tree/master/src/libraries/WiFlySerial)
   * PString
     * http://arduiniana.org/libraries/PString
   * Streaming
