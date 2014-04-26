@@ -7,7 +7,7 @@ The button connects to your wifi network, and when you press it, it sends a payl
 ![Button](https://github.com/snrub/big-red-button/raw/master/button.jpg)&nbsp;
 ![Schematics - small](https://github.com/snrub/big-red-button/raw/master/schematics/BigRedButton_sml.png)
 
-This is just a prototype, so the enclosure is big and ugly. Also changing the network settings is a pain in the arse. You need to dismantle the enclosure, plug the arduino in, and re-upload the `Configuration.h` file. There is a [wirelessSetup branch](https://github.com/snrub/big-red-button/tree/wirelessSetup) which aims to allow you to edit that config over wifi. That's still a work in progress.
+This is just a prototype, so the enclosure is big and ugly. Also changing the network settings is a pain in the arse. You need to dismantle the enclosure, plug the arduino in, and re-upload the `Configuration.h` file. There is a [wirelessSetup branch](https://github.com/snrub/big-red-button/tree/wirelessSetup) which will allow you to edit that config over wifi. That's still a work in progress.
 
 # Hardware
 
