@@ -3,8 +3,14 @@
  * Quick and dirty sketch to connect to a wifi network, and request a URL when a button is pressed.
  * The LED is used to indicate status - if the light is lit, then the button is ready to be pressed.
  *
- * Wifi credentials and the URL that should be requested should be defined in
- * Configuration.h
+ * @todo: The aim of this version is to allow you to change the wifi settings and webservice endpoint
+ *        without having to dismantle the button and plug it into the computer.
+ *        If the button is depressed and held as the button is switched on, an adhoc network will be
+ *        created. If you join that adhoc network, there should be some way of showing the current
+ *        settings and changing them if desired.
+ *        The changes should be maintained after power-down and reboot, so some kind of persistent
+ *        storage is required. The WiFly module provides some basic storage and an interface to change
+ *        settings, so it might be possible to use those.
  *
  * @author: Julian Lloyd-Phillips <jules@tasticl.es>
  * @date: 2012-08-12
