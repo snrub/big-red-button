@@ -11,7 +11,7 @@
  * @license: MIT
  * @link: https://github.com/snrub/big-red-button
  */
- 
+
 #include <Arduino.h>
 #include <Streaming.h>
 #include <PString.h>
@@ -30,36 +30,108 @@ const int buttonPin = 3;
 const int ledPin =    5;
 const int ardTxPin = 7;
 const int ardRxPin = 8;
+const int adhocPin = 16;
 
 int buttonState = 0;
 int requestMade = 0;
 
-WiFlySerial WiFly(ardRxPin, ardTxPin); 
+boolean wifiReady = false;
+
+// initialise card
+WiFlySerial WiFly(ardRxPin, ardTxPin);
 
 void setup() 
 {
-  // initialise card
-    delay(2000);
     Serial.begin(9600);
+    delay(1000);
     Serial.println("THE BUTTON");
     
     pinMode(ledPin, OUTPUT);
     // we'll keep the LED off until we can press the button
     digitalWrite(ledPin, LOW);
+    // don't go into adhoc mode yet
+    digitalWrite(adhocPin, LOW);
 
     WiFly.begin();
-   //WiFly.reboot();
     // get MAC address
     Serial << F("MAC: ") << WiFly.getMAC(bufRequest, REQUEST_BUFFER_SIZE) << endl;
 
+    // if the button is pressed on start
+    // skip the normal setup routine, and create
+    // an adhoc network instead
+    if(digitalRead(buttonPin) == HIGH)
+    {
+      Serial << F("Button is pressed. Setting up adhoc network") << endl;
+      createAdHoc();
+    }
+    else
+    {
+      Serial << F("No button pressed - attempting association") << endl;
+      //wifiJoin();
+      //Serial << F("SSID: ") << WiFly.getSSID(bufRequest, REQUEST_BUFFER_SIZE) << endl;
+      
+      WiFly.SendCommand("get wlan ssid",">", bufBody, BODY_BUFFER_SIZE);
+      Serial << F("NEWSSID: ") << bufBody  << endl;
+    }
+}
+
+
+void loop() 
+{
+  
+  // only execute the loop if wifi is available
+  if(wifiReady == 1)
+  {
+    // read the state of the button
+    buttonState = digitalRead(buttonPin);
+    // HIGH == pressed
+    if (buttonState == HIGH) 
+    {
+        // only make one request per press
+        if(requestMade == 0) 
+        {
+            requestMade = 1;
+            // make the request
+            request();
+        }
+        else
+        {
+            //Serial.println("request already made");
+        }
+    } 
+    else 
+    {
+        requestMade = 0;
+        //Serial.println("button off");
+    }
+  }
+  else
+  {
+    // slow flash
+    flashLed(1, 2000);
+    // attempt reconnect
+    // wifiJoin();
+  }
+}
+
+
+void wifiSetAuth()
+{
     // set our auth options
     WiFly.setAuthMode( WIFLY_AUTH_WPA2_PSK );
     WiFly.setJoinMode( WIFLY_JOIN_AUTO );
     WiFly.setDHCPMode( WIFLY_DHCP_ON );
     // use our expensive external antenna
     WiFly.setUseExternalAnt(WIFLY_EXTERNAL_ANT_ON);
+}
 
+boolean wifiJoin()
+{
     Serial << F("Attempting to join network '") << wifiSSID << F("'...") << endl;
+
+    // set out auth options
+    wifiSetAuth();
+
     // open link, if we don't already have one
     WiFly.getDeviceStatus();
     if (! WiFly.isifUp() ) 
@@ -71,7 +143,6 @@ void setup()
         if ( WiFly.join() ) 
         {
             Serial << F("We associated with ") << wifiSSID << F(" successfully.") << endl;
-            
             // disable default *hello* bullshit
             WiFly.SendCommand("set comm remote 0",">", bufBody, BODY_BUFFER_SIZE);
             memset (bufBody,'\0',BODY_BUFFER_SIZE);
@@ -79,51 +150,30 @@ void setup()
             // clear out prior requests.
             WiFly.flush();
             while (WiFly.available())
-                WiFly.read();    
-        
+                WiFly.read();
+
             // we're ready for the button - switch the LED on
             digitalWrite(ledPin, HIGH);
+            wifiReady = true;
+            return true;
         }
         else
         {
             Serial << F("Association with ") << wifiSSID << F(" failed.") << endl;
+            wifiReady = false;
+            return false;
         }
     }
     else
     {
-            Serial << F("Network interface is not available") << endl;
+        Serial << F("Network interface is not available") << endl;
     }
-}
-
-void loop() 
-{
-    // read the state of the button
-    buttonState = digitalRead(buttonPin);
-    // HIGH == pressed
-    if (buttonState == HIGH) 
-    { 
-        Serial.println("button on");
-        // only make one request per press
-        if(requestMade == 0) 
-        {
-            requestMade = 1;
-            // make the request
-            request();
-        }
-        else
-        {
-            Serial.println("request already made");
-        }
-    } 
-    else 
-    {
-        requestMade = 0;
-        //Serial.println("button off");
-    }
+    wifiReady = false;
+    return false;
 }
 
 
-// make an HTTP GET request    
+// make an HTTP GET request
 int request() 
 {
     Serial.println("making request");
@@ -151,9 +201,9 @@ int request()
         // buffer server response
         unsigned long TimeOut = millis() + 4000;
 
-        while (    TimeOut > millis() && WiFly.isConnectionOpen() ) 
+        while ( TimeOut > millis() && WiFly.isConnectionOpen() )
         {
-            if (    WiFly.available() > 0 ) 
+            if ( WiFly.available() > 0 ) 
             {
                 // display
                 Serial << (char) WiFly.read();
@@ -162,22 +212,47 @@ int request()
 
         // Force close connection
         WiFly.closeConnection();
-        
-        // force a 2 second delay
-        delay(2000);
         // we're done - switch the LED back on
         digitalWrite(ledPin, HIGH);
-    } 
-    else 
+    }
+    else
     {
         // Failed to open connection
-        Serial << F("Failed to open connection to") << serverHost << endl;
-        // force a 2 second delay
-        delay(2000);
-        digitalWrite(ledPin, HIGH);
+        Serial << F("Failed to open connection to ") << serverHost << endl;
     }
 
     WiFly.setDebugChannel( NULL );
+    // stop jitter
+    delay(100);
     return 0;
+}
+
+
+void createAdHoc()
+{
+  Serial << F("Entering Ad Hoc mode... ");
+  flashLed(40, 100);
+  digitalWrite(adhocPin, HIGH);
+  Serial << F("Pin high, rebooting...");
+  WiFly.getDeviceStatus();
+  WiFly.reboot();
+  // use our expensive external antenna
+  WiFly.setUseExternalAnt(WIFLY_EXTERNAL_ANT_ON);
+  Serial << F("Back from reboot");
+  delay(1000);
+  flashLed(50, 100);
+  digitalWrite(adhocPin, LOW);
+}
+
+
+void flashLed(int flashes, int frequency)
+{
+  for(int i=0;i<flashes;i++)
+  {
+    digitalWrite(ledPin, HIGH);
+    delay (frequency/2);
+    digitalWrite(ledPin, LOW);
+    delay (frequency/2);
+  }
 }
 
