@@ -27,7 +27,7 @@ This is just a prototype, so the enclosure is big and ugly. Also changing the ne
 
 # Drivers
 
-I used a non-official Arduino board, so some extra drivers were needed.   
+The Pro Micro board isn't natively supported by the Arduino IDE, so you need to install some drivers for it.   
 Install these into the `<sketchbook-root>/hardware/` directory
 
   * 3.3v Pro Micro Board driver
@@ -35,8 +35,8 @@ Install these into the `<sketchbook-root>/hardware/` directory
 
 # Libraries
 
-Installation Instructions: http://arduino.cc/en/Guide/Libraries   
-Install these into the `<sketchbook-root>/libraries/` directory
+Install these into the `<sketchbook-root>/libraries/` directory.   
+Complete installation instructions: http://arduino.cc/en/Guide/Libraries
 
   * WiFlySerial
     * Modified: [I've modified it to enable me to use an external antenna](https://github.com/snrub/big-red-button/tree/master/src/libraries/WiFlySerial)
