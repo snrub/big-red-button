@@ -46,6 +46,13 @@ boolean wifiReady = false;
 // initialise card
 WiFlySerial WiFly(ardRxPin, ardTxPin);
 
+/**
+ * Startup sequence
+ *  - get the mac address of the wifi card
+ *  - check for startup button press
+ *  - either join the wireless network defined in Configuration,
+ *    or create an AdHoc network to allow settings change
+ */
 void setup() 
 {
     Serial.begin(9600);
@@ -81,7 +88,12 @@ void setup()
     }
 }
 
-
+/**
+ * Main loop - waiting for a button press
+ * Indicates status through the LED:
+ *  - solid LED: network available and button ready
+ *  - slow flashing: network unavailable
+ */
 void loop() 
 {
   
@@ -120,7 +132,9 @@ void loop()
   }
 }
 
-
+/**
+ * Set the connection parameters for the wifi card
+ */
 void wifiSetAuth()
 {
     // set our auth options
@@ -131,6 +145,9 @@ void wifiSetAuth()
     WiFly.setUseExternalAnt(WIFLY_EXTERNAL_ANT_ON);
 }
 
+/**
+ * Join a wifi network
+ */
 boolean wifiJoin()
 {
     Serial << F("Attempting to join network '") << wifiSSID << F("'...") << endl;
@@ -179,7 +196,9 @@ boolean wifiJoin()
 }
 
 
-// make an HTTP GET request
+/**
+ * Make an HTTP GET request
+ */
 int request() 
 {
     Serial.println("making request");
@@ -233,7 +252,9 @@ int request()
     return 0;
 }
 
-
+/**
+ * Create an AdHoc wifi network to allow settings to be adjusted
+ */
 void createAdHoc()
 {
   Serial << F("Entering Ad Hoc mode... ");
@@ -250,7 +271,9 @@ void createAdHoc()
   digitalWrite(adhocPin, LOW);
 }
 
-
+/**
+ * Flash the status LED
+ */
 void flashLed(int flashes, int frequency)
 {
   for(int i=0;i<flashes;i++)
