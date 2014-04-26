@@ -34,8 +34,14 @@ const int ardRxPin = 8;
 int buttonState = 0;
 int requestMade = 0;
 
+// initialise the WiFly card
 WiFlySerial WiFly(ardRxPin, ardTxPin); 
 
+/**
+ * Startup sequence
+ *  - get the mac address of the wifi card
+ *  - join the wifi network
+ */
 void setup() 
 {
   // initialise card
@@ -95,6 +101,11 @@ void setup()
     }
 }
 
+/**
+ * Main loop - waiting for a button press
+ * Indicates status through the LED:
+ *  - solid LED: network available and button ready
+ */
 void loop() 
 {
     // read the state of the button
@@ -123,7 +134,9 @@ void loop()
 }
 
 
-// make an HTTP GET request    
+/**
+ * Make an HTTP GET request
+ */
 int request() 
 {
     Serial.println("making request");
@@ -180,4 +193,3 @@ int request()
     WiFly.setDebugChannel( NULL );
     return 0;
 }
-
