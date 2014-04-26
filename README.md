@@ -1,10 +1,13 @@
 big red button
 ==============
 
-An arduino powered, wifi-enabled Big Red Button. You press the button, it sends a payload to a user-defined webservice. From there, the possibilities are endless!
+An arduino powered, wifi-enabled Big Red Button.   
+The button connects to your wifi network, and when you press it, it sends a payload to a user-defined webservice. From there, the possibilities are endless!
 
 ![Button](https://github.com/snrub/big-red-button/raw/master/button.jpg)&nbsp;
 ![Schematics - small](https://github.com/snrub/big-red-button/raw/master/schematics/BigRedButton_sml.png)
+
+This is just a prototype, so the enclosure is big and ugly. Also changing the network settings is a pain in the arse. You need to dismantle the enclosure, plug the arduino in, and re-upload the `Configuration.h` file. There is a [wirelessSetup branch](https://github.com/snrub/big-red-button/tree/wirelessSetup) which will allow you to edit that config over wifi. That's still a work in progress.
 
 # Hardware
 
@@ -24,7 +27,7 @@ An arduino powered, wifi-enabled Big Red Button. You press the button, it sends 
 
 # Drivers
 
-I used a non-official Arduino board, so some extra drivers were needed.   
+The Pro Micro board isn't natively supported by the Arduino IDE, so you need to install some drivers for it.   
 Install these into the `<sketchbook-root>/hardware/` directory
 
   * 3.3v Pro Micro Board driver
@@ -32,8 +35,8 @@ Install these into the `<sketchbook-root>/hardware/` directory
 
 # Libraries
 
-Installation Instructions: http://arduino.cc/en/Guide/Libraries   
-Install these into the `<sketchbook-root>/libraries/` directory
+Install these into the `<sketchbook-root>/libraries/` directory.   
+Complete installation instructions: http://arduino.cc/en/Guide/Libraries
 
   * WiFlySerial
     * Modified: [I've modified it to enable me to use an external antenna](https://github.com/snrub/big-red-button/tree/master/src/libraries/WiFlySerial)
