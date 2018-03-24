@@ -49,6 +49,6 @@ Complete installation instructions: http://arduino.cc/en/Guide/Libraries
 # License
 
 The MIT License (MIT)   
-Copyright (c) 2014 Julian Lloyd-Phillips   
+Copyright (c) 2014 snrub   
 Full license: https://github.com/snrub/big-red-button/blob/master/LICENSE
 
